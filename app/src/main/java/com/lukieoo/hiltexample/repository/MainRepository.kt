@@ -6,7 +6,7 @@ import com.lukieoo.hiltexample.retrofit.CatRetrofit
 import com.lukieoo.hiltexample.retrofit.NetworkMapper
 import com.lukieoo.hiltexample.room.CacheMapper
 import com.lukieoo.hiltexample.room.CatDao
-import com.lukieoo.hiltexample.Cat
+import com.lukieoo.hiltexample.model.Cat
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

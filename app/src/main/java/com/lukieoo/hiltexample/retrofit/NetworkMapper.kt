@@ -1,7 +1,7 @@
 package com.lukieoo.hiltexample.retrofit
 
 import com.lukieoo.hiltexample.util.EntityMapper
-import com.lukieoo.hiltexample.Cat
+import com.lukieoo.hiltexample.model.Cat
 import javax.inject.Inject
 
 class NetworkMapper

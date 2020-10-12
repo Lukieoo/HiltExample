@@ -3,7 +3,7 @@ package com.lukieoo.hiltexample.ui
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.lukieoo.hiltexample.Cat
+import com.lukieoo.hiltexample.model.Cat
 import com.lukieoo.hiltexample.repository.MainRepository
 import com.lukieoo.hiltexample.util.DataState
 import kotlinx.coroutines.ExperimentalCoroutinesApi

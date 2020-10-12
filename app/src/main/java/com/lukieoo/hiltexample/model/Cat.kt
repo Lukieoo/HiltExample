@@ -1,4 +1,4 @@
-package com.lukieoo.hiltexample
+package com.lukieoo.hiltexample.model
 
 
 data class Cat(

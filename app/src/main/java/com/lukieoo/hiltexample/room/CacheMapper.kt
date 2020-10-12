@@ -1,7 +1,7 @@
 package com.lukieoo.hiltexample.room
 
 import com.lukieoo.hiltexample.util.EntityMapper
-import com.lukieoo.hiltexample.Cat
+import com.lukieoo.hiltexample.model.Cat
 import javax.inject.Inject
 
 class CacheMapper
@@ -9,7 +9,7 @@ class CacheMapper
 constructor():
     EntityMapper<CatCacheEntity, Cat> {
 
-    override fun mapFromEntity(entity: CatCacheEntity): Cat{
+    override fun mapFromEntity(entity: CatCacheEntity): Cat {
         return Cat(
             id = entity.id,
             url = entity.url,
