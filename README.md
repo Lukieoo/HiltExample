@@ -15,7 +15,7 @@ This project is example of using Hilt in your application.
 Project is created with:
 * Depedency injection with Hilt
 * Retrofit 2
-* MVI Architecture
+* MVI Architekture intent 
 * Dao Room
 * Clean Architecture
 	
