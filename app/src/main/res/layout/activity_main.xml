@@ -9,6 +9,4 @@
     app:defaultNavHost="true"
     app:navGraph="@navigation/main_nav"
     >
-
-
 </androidx.fragment.app.FragmentContainerView>

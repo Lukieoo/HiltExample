@@ -3,12 +3,13 @@ package com.lukieoo.hiltexample.ui
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import com.lukieoo.hiltexample.intent.Intent
 import com.lukieoo.hiltexample.model.Cat
 import com.lukieoo.hiltexample.repository.MainRepository
 import com.lukieoo.hiltexample.util.DataState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
@@ -17,40 +18,44 @@ class MainViewModel
 constructor(
     private val mainRepository: MainRepository,
     @Assisted private val savedStateHandle: SavedStateHandle
-): ViewModel() {
+) : ViewModel() {
 
-    private val _dataState: MutableLiveData<DataState<List<Cat>>> = MutableLiveData()
 
-    val dataState: LiveData<DataState<List<Cat>>>
+    val userIntent = Channel<Intent>(Channel.UNLIMITED)
+
+    private val _dataState= MutableStateFlow<DataState>(DataState.Idle)
+
+    val dataState: StateFlow<DataState>
         get() = _dataState
-
-    fun setStateEvent(mainStateEvent: MainStateEvent){
+    init {
+        setStateEvent()
+    }
+    fun setStateEvent() {
         viewModelScope.launch {
-            when(mainStateEvent){
-                is MainStateEvent.GetBlogsEvent -> {
-                    mainRepository.getCats()
-                        .onEach {dataState ->
-                            _dataState.value = dataState
-                        }
-                        .launchIn(viewModelScope)
+            userIntent.consumeAsFlow().collect {
+                when (it) {
+                    is Intent.GetBlogsEvent -> {
+                        mainRepository.getCats()
+                            .onEach {
+                                _dataState.value = it
+                            }
+                            .launchIn(viewModelScope)
+                    }
+
+                    Intent.None -> {
+                        // who cares
+                    }
                 }
 
-                MainStateEvent.None -> {
-                    // who cares
-                }
             }
+
+
         }
     }
 
 }
 
 
-sealed class MainStateEvent{
-
-    object GetBlogsEvent: MainStateEvent()
-
-    object None: MainStateEvent()
-}
 
 
 

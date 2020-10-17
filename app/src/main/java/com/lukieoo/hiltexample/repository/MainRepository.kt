@@ -19,7 +19,7 @@ constructor(
     private val cacheMapper: CacheMapper,
     private val networkMapper: NetworkMapper
 ){
-    suspend fun getCats(): Flow<DataState<List<Cat>>> = flow {
+    suspend fun getCats(): Flow<DataState> = flow {
         emit(DataState.Loading)
         delay(1000)
         try{

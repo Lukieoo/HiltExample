@@ -5,17 +5,20 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lukieoo.hiltexample.model.Cat
 import com.lukieoo.hiltexample.R
-import com.lukieoo.hiltexample.ui.MainStateEvent
+import com.lukieoo.hiltexample.intent.Intent
 import com.lukieoo.hiltexample.ui.MainViewModel
 import com.lukieoo.hiltexample.util.AdapterCats
 import com.lukieoo.hiltexample.util.DataState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.flow.collect
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -34,7 +37,7 @@ constructor(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         subscribeObservers()
-        viewModel.setStateEvent(MainStateEvent.GetBlogsEvent)
+//        viewModel.setStateEvent()
 
 
 
@@ -50,27 +53,29 @@ constructor(
         recyclerViewCats.adapter = catsAdapter
 
         subscribeObservers()
-        viewModel.setStateEvent(MainStateEvent.GetBlogsEvent)
+        lifecycleScope.launch {
+            viewModel.userIntent.send(Intent.GetBlogsEvent)
+        }
     }
 
     private fun subscribeObservers() {
-        activity?.let {
-            viewModel.dataState.observe(it, Observer { dataState ->
-                when (dataState) {
-                    is DataState.Success<List<Cat>> -> {
+        lifecycleScope.launch {
+            viewModel.dataState.collect {
+                when (it) {
+                    is DataState.Success -> {
                         displayProgressBar(false)
 //                    appendCatID(dataState.data)
-                        catsAdapter.setCats(dataState.data)
+                        catsAdapter.setCats(it.cats)
                     }
                     is DataState.Error -> {
                         displayProgressBar(false)
-                        displayError(dataState.exception.message)
+                        displayError(it.exception.message)
                     }
                     is DataState.Loading -> {
                         displayProgressBar(true)
                     }
                 }
-            })
+            }
         }
     }
 

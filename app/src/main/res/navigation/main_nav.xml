@@ -9,4 +9,5 @@
         android:id="@+id/mainFragment"
         android:name="com.lukieoo.hiltexample.fragment.MainFragment"
         android:label="MainFragment" />
+
 </navigation>
