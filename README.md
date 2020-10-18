@@ -17,6 +17,7 @@ Project is created with:
 * Retrofit 2
 * MVI Architekture intent 
 * Dao Room
+* Coroutines android
 * Clean Architecture
 	
 ## Useful Links
